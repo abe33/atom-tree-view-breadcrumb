@@ -1,0 +1,34 @@
+@import "ui-variables";
+
+@breadcrumb-height: 27px;
+
+.tree-view-scroller {
+  transition: -webkit-transform 0.3s, height 0.3s;
+}
+
+.with-breadcrumb .tree-view-scroller {
+  -webkit-transform: translate(0,@breadcrumb-height);
+  height: calc(~"100% - @{@breadcrumb-height}")
+}
+
+.tree-view-breadcrumb.tool-panel {
+  position: absolute;
+  margin-left: -5px;
+  margin-right: -10px;
+  overflow-x: auto;
+  width: 100%;
+  transition: -webkit-transform 0.3s;
+  -webkit-transform: translate(0,-@breadcrumb-height);
+
+  &.visible {
+    -webkit-transform: translate(0,0);
+  }
+
+  .btn-group {
+    white-space: nowrap;
+
+    .btn {
+      float: none;
+    }
+  }
+}
