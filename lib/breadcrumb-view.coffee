@@ -79,10 +79,7 @@ class BreadcrumbView extends View
 
   firstVisibleTreeItem: (scrollTop) ->
     itemHeight = @getItemHeight()
+    index = Math.ceil(scrollTop / itemHeight)
     self = this
     found = null
-    @treeView.find('.list-item.header, .list-item.file').each ->
-      if @offsetTop < scrollTop + itemHeight / 2 and @offsetTop + itemHeight > scrollTop + itemHeight / 2
-        found = this
-
-    found
+    @treeView.find('.list-item.header, .list-item.file')[index]
