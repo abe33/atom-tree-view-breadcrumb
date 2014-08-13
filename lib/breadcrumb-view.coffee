@@ -18,6 +18,7 @@ class BreadcrumbView extends View
         @treeViewScroller = @treeView.find('.tree-view-scroller')
         @treeViewScroller.on 'scroll', @treeViewScrolled
         @rootItem = @treeViewScroller.find('.header.list-item').first()[0]
+        @treeViewScrolled()
       else
         setTimeout pollTreeView, 100
 
