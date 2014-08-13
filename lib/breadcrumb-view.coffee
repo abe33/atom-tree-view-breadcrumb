@@ -18,6 +18,11 @@ class BreadcrumbView extends View
         @treeViewScroller = @treeView.find('.tree-view-scroller')
         @treeViewScroller.on 'scroll', @treeViewScrolled
         @treeViewScrolled()
+        @breadcrumb.on 'click', '.btn', (e) =>
+          target = $(e.target).data('target')
+          item = @treeView.find("[data-path='#{target}']")
+          @scrollToItem(@treeView.find("[data-path='#{target}']"))
+
       else
         setTimeout pollTreeView, 100
 
@@ -44,6 +49,38 @@ class BreadcrumbView extends View
   destroy: ->
     @detach()
 
+  updateBreadcrumb: (node) ->
+    node = $(node)
+    html = []
+    parents = []
+    parents.unshift n for n in node.parents('.directory')
+    parents.shift()
+
+    path = []
+
+    parents.forEach (node, i) ->
+      label = $(node).children('.header').text()
+      path.push label
+      cls = 'btn'
+      cls += ' btn-primary' if i is parents.length - 1
+
+      html.push """
+        <div class='#{cls}' data-target='#{path.join('/')}'>
+          #{label}
+        </div>
+      """
+
+    @breadcrumb.html html.join('')
+
+    if atom.config.get('tree-view-breadcrumb.scrollToLastItem')
+      @scrollLeft(@element.scrollWidth)
+
+  scrollToItem: (item) ->
+    oldScroll = @treeView.scrollTop()
+    newScroll = item.offset().top + oldScroll - @breadcrumb.height()
+    console.log newScroll
+    @treeView.scrollTop(newScroll)
+
   treeViewScrolled: =>
     scrollTop = @treeView.scrollTop()
 
@@ -53,7 +90,8 @@ class BreadcrumbView extends View
       # @lastFirstVisibleTreeItem?.classList.remove('debug-item')
       # currentFirstVisibleTreeItem.classList.add('debug-item')
       @lastFirstVisibleTreeItem = currentFirstVisibleTreeItem
-      currentParent = $(currentFirstVisibleTreeItem).parents('ol').first().parent().children('.header')[0]
+      currentParent = @parentHeader(currentFirstVisibleTreeItem)
+
       if currentParent isnt @lastParent
         @updateBreadcrumb(currentParent)
         @lastParent = currentParent
@@ -67,23 +105,6 @@ class BreadcrumbView extends View
       @lastParent = null
       @hide()
 
-  updateBreadcrumb: (node) ->
-    node = $(node)
-    html = []
-    parents = []
-    parents.unshift n for n in node.parents('.directory')
-    parents.shift()
-
-    parents.forEach (node, i) ->
-      cls = 'btn'
-      cls += ' btn-primary' if i is parents.length - 1
-      html.push "<div class='#{cls}'>#{$(node).children('.header').text()}</div>"
-
-    @breadcrumb.html html.join('')
-
-    if atom.config.get('tree-view-breadcrumb.scrollToLastItem')
-      @scrollLeft(@element.scrollWidth)
-
   getItemHeight: ->
     @treeView.find('.list-item.header').first().height()
 
@@ -93,3 +114,6 @@ class BreadcrumbView extends View
     self = this
     found = null
     @treeView.find('.list-item.header, .list-item.file')[index]
+
+  parentHeader: (node) ->
+    $(node).parents('ol').first().parent().children('.header')[0]
