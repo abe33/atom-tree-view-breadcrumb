@@ -75,8 +75,10 @@ class BreadcrumbView extends View
     parents.unshift n for n in node.parents('.directory')
     parents.shift()
 
-    parents.forEach (node) ->
-      html.push "<div class='btn'>#{$(node).children('.header').text()}</div>"
+    parents.forEach (node, i) ->
+      cls = 'btn'
+      cls += ' btn-primary' if i is parents.length - 1
+      html.push "<div class='#{cls}'>#{$(node).children('.header').text()}</div>"
 
     @breadcrumb.html html.join('')
 
