@@ -11,6 +11,7 @@ describe "TreeViewBreadcrumb", ->
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
+    atom.packages.activatePackage('tree-view')
     activationPromise = atom.packages.activatePackage('tree-view-breadcrumb')
 
   describe "when the tree-view-breadcrumb:toggle event is triggered", ->
@@ -19,12 +20,8 @@ describe "TreeViewBreadcrumb", ->
 
       # This is an activation event, triggering it will cause the package to be
       # activated.
-      atom.workspaceView.trigger 'tree-view-breadcrumb:toggle'
 
       waitsForPromise ->
         activationPromise
 
       runs ->
-        expect(atom.workspaceView.find('.tree-view-breadcrumb')).toExist()
-        atom.workspaceView.trigger 'tree-view-breadcrumb:toggle'
-        expect(atom.workspaceView.find('.tree-view-breadcrumb')).not.toExist()
