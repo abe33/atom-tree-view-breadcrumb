@@ -51,11 +51,15 @@ class BreadcrumbView extends View
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
     currentParent = null
     if currentFirstVisibleTreeItem? and currentFirstVisibleTreeItem isnt @lastFirstVisibleTreeItem
+      # @lastFirstVisibleTreeItem?.classList.remove('debug-item')
+      # currentFirstVisibleTreeItem.classList.add('debug-item')
       @lastFirstVisibleTreeItem = currentFirstVisibleTreeItem
       currentParent = $(currentFirstVisibleTreeItem).parents('ol').first().parent().children('.header')[0]
       if currentParent isnt @lastParent
         @updateBreadcrumb(currentParent)
         @lastParent = currentParent
+    # else unless currentFirstVisibleTreeItem?
+    #   @lastFirstVisibleTreeItem?.classList.remove('debug-item')
 
     if !@attached and scrollTop > 0 and currentParent isnt @rootItem
       @show()
@@ -75,7 +79,6 @@ class BreadcrumbView extends View
       html.push "<div class='btn'>#{$(node).children('.header').text()}</div>"
 
     @breadcrumb.html html.join('')
-
 
   getItemHeight: ->
     @treeView.find('.list-item.header').first().height()
