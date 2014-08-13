@@ -48,18 +48,21 @@ class BreadcrumbView extends View
   treeViewScrolled: =>
     scrollTop = @treeView.scrollTop()
 
-    if scrollTop > 0 and !@attached
-      @show()
-    else if @attached and scrollTop is 0
-      @hide()
-
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
+    currentParent = null
     if currentFirstVisibleTreeItem? and currentFirstVisibleTreeItem isnt @lastFirstVisibleTreeItem
       @lastFirstVisibleTreeItem = currentFirstVisibleTreeItem
       currentParent = $(currentFirstVisibleTreeItem).parents('ol').first().parent().children('.header')[0]
       if currentParent isnt @lastParent
         @updateBreadcrumb(currentParent)
         @lastParent = currentParent
+
+    if !@attached and scrollTop > 0 and currentParent isnt @rootItem
+      @show()
+    else if @attached and (scrollTop is 0 or currentParent is @rootItem)
+      @lastFirstVisibleTreeItem = null
+      @lastParent = null
+      @hide()
 
   updateBreadcrumb: (node) ->
     node = $(node)
