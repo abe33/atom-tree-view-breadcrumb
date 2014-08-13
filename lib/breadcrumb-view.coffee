@@ -12,10 +12,16 @@ class BreadcrumbView extends View
   lastParent: null
 
   initialize: (state) ->
-    {@treeView} = require(atom.packages.getLoadedPackage('tree-view').path)
-    @treeViewScroller = @treeView.find('.tree-view-scroller')
+    pollTreeView = =>
+      {@treeView} = require(atom.packages.getLoadedPackage('tree-view').path)
+      if @treeView?
+        @treeViewScroller = @treeView.find('.tree-view-scroller')
+        @treeViewScroller.on 'scroll', @treeViewScrolled
+        @rootItem = @treeViewScroller.find('.header.list-item').first()[0]
+      else
+        setTimeout pollTreeView, 100
 
-    @treeViewScroller.on 'scroll', @treeViewScrolled
+    pollTreeView()
 
   show: ->
     @attach()
