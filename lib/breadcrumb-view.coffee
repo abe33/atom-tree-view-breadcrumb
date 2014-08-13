@@ -87,16 +87,12 @@ class BreadcrumbView extends View
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
     currentParent = null
     if currentFirstVisibleTreeItem? and currentFirstVisibleTreeItem isnt @lastFirstVisibleTreeItem
-      # @lastFirstVisibleTreeItem?.classList.remove('debug-item')
-      # currentFirstVisibleTreeItem.classList.add('debug-item')
       @lastFirstVisibleTreeItem = currentFirstVisibleTreeItem
       currentParent = @parentHeader(currentFirstVisibleTreeItem)
 
       if currentParent isnt @lastParent
         @updateBreadcrumb(currentParent)
         @lastParent = currentParent
-    # else unless currentFirstVisibleTreeItem?
-    #   @lastFirstVisibleTreeItem?.classList.remove('debug-item')
 
     if !@attached and scrollTop > 0 and !@breadcrumb.is(':empty')
       @show()
