@@ -1,3 +1,11 @@
+<a name="v0.2.0"></a>
+# v0.2.0 (2014-08-13)
+
+## :sparkles: Features
+
+- Add `scroll to` click action on breadcrumb buttons ([d2e4bc7b](https://github.com/abe33/atom-tree-view-breadcrumb/commit/d2e4bc7b0d721eda06353728da5c380b40904eee))
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2014-08-13)
 
