@@ -17,7 +17,6 @@ class BreadcrumbView extends View
       if @treeView?
         @treeViewScroller = @treeView.find('.tree-view-scroller')
         @treeViewScroller.on 'scroll', @treeViewScrolled
-        @rootItem = @treeViewScroller.find('.header.list-item').first()[0]
         @treeViewScrolled()
       else
         setTimeout pollTreeView, 100
@@ -61,9 +60,9 @@ class BreadcrumbView extends View
     # else unless currentFirstVisibleTreeItem?
     #   @lastFirstVisibleTreeItem?.classList.remove('debug-item')
 
-    if !@attached and scrollTop > 0 and currentParent isnt @rootItem
+    if !@attached and scrollTop > 0 and !@breadcrumb.is(':empty')
       @show()
-    else if @attached and (scrollTop is 0 or currentParent is @rootItem)
+    else if @attached and (scrollTop is 0 or @breadcrumb.is(':empty'))
       @lastFirstVisibleTreeItem = null
       @lastParent = null
       @hide()
