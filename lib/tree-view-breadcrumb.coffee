@@ -2,6 +2,8 @@ BreadcrumbView = require './breadcrumb-view'
 
 module.exports =
   breadcrumbView: null
+  configDefaults:
+    scrollToLastItem: true
 
   activate: (state) ->
     if atom.workspaceView.find('.tree-view')

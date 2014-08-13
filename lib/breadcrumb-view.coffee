@@ -82,6 +82,9 @@ class BreadcrumbView extends View
 
     @breadcrumb.html html.join('')
 
+    if atom.config.get('tree-view-breadcrumb.scrollToLastItem')
+      @scrollLeft(@element.scrollWidth)
+
   getItemHeight: ->
     @treeView.find('.list-item.header').first().height()
 
