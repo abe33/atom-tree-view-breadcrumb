@@ -1,29 +1,6 @@
 {View} = require 'atom'
 $ = View.__super__.constructor
 
-requirePackages = (packages...) ->
-  new Promise (resolve, reject) ->
-    required = []
-    promises = []
-    failures = []
-    remains = packages.length
-
-    solved = ->
-      remains--
-      return unless remains is 0
-      return reject(failures) if failures.length > 0
-      resolve(required)
-
-    packages.forEach (pkg, i) ->
-      promises.push(atom.packages.activatePackage(pkg)
-      .then (activatedPackage) ->
-        required[i] = activatedPackage.mainModule
-        solved()
-      .fail (reason) ->
-        failures[i] = reason
-        solved()
-      )
-
 module.exports =
 class BreadcrumbView extends View
   @content: ->
@@ -34,24 +11,24 @@ class BreadcrumbView extends View
   lastFirstVisibleTreeItem: null
   lastParent: null
 
-  initialize: (state) ->
-    requirePackages('tree-view').then ([@treeView]) ->
-      @treeViewScroller = @treeView.find('.tree-view-scroller')
-      @treeViewScroller.on 'scroll', @treeViewScrolled
-      @treeViewScrolled()
-      @breadcrumb.on 'click', '.btn', (e) =>
-        target = $(e.target).data('target')
-        item = @treeView.find("[data-path='#{target}']")
-        @scrollToItem(@treeView.find("[data-path='#{target}']"))
+  initialize: (@treeView) ->
+    @$treeView = atom.workspaceView.find('.tree-view')
+    @treeViewScroller = atom.workspaceView.find('.tree-view-scroller')
+    @treeViewScroller.on 'scroll', @treeViewScrolled
+    @treeViewScrolled()
+    @breadcrumb.on 'click', '.btn', (e) =>
+      target = $(e.target).data('target')
+      item = @$treeView.find("[data-path='#{target}']")
+      @scrollToItem(@$treeView.find("[data-path='#{target}']"))
 
   show: ->
     @attach()
-    @treeView.addClass('with-breadcrumb')
+    @$treeView.addClass('with-breadcrumb')
     @addClass('visible')
 
   hide: ->
     @removeClass('visible')
-    @treeView.removeClass('with-breadcrumb')
+    @$treeView.removeClass('with-breadcrumb')
     setTimeout((=> @detach()), 300)
 
   attach: ->
@@ -92,13 +69,14 @@ class BreadcrumbView extends View
       @scrollLeft(@element.scrollWidth)
 
   scrollToItem: (item) ->
-    oldScroll = @treeView.scrollTop()
+    oldScroll = @treeViewScroller.scrollTop()
     newScroll = item.offset().top + oldScroll - @breadcrumb.height()
-    console.log newScroll
-    @treeView.scrollTop(newScroll)
+    @treeViewScroller.scrollTop(newScroll)
 
   treeViewScrolled: =>
-    scrollTop = @treeView.scrollTop()
+    scrollTop = @treeViewScroller.scrollTop()
+
+    console.log scrollTop
 
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
     currentParent = null
@@ -118,14 +96,14 @@ class BreadcrumbView extends View
       @hide()
 
   getItemHeight: ->
-    @treeView.find('.list-item.header').first().height()
+    @$treeView.find('.list-item.header').first().height()
 
   firstVisibleTreeItem: (scrollTop) ->
     itemHeight = @getItemHeight()
     index = Math.ceil(scrollTop / itemHeight)
     self = this
     found = null
-    @treeView.find('.list-item.header, .list-item.file')[index]
+    @$treeView.find('.list-item.header, .list-item.file')[index]
 
   parentHeader: (node) ->
     $(node).parents('ol').first().parent().children('.header')[0]
