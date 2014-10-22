@@ -1,6 +1,29 @@
 {View} = require 'atom'
 $ = View.__super__.constructor
 
+requirePackages = (packages...) ->
+  new Promise (resolve, reject) ->
+    required = []
+    promises = []
+    failures = []
+    remains = packages.length
+
+    solved = ->
+      remains--
+      return unless remains is 0
+      return reject(failures) if failures.length > 0
+      resolve(required)
+
+    packages.forEach (pkg, i) ->
+      promises.push(atom.packages.activatePackage(pkg)
+      .then (activatedPackage) ->
+        required[i] = activatedPackage.mainModule
+        solved()
+      .fail (reason) ->
+        failures[i] = reason
+        solved()
+      )
+
 module.exports =
 class BreadcrumbView extends View
   @content: ->
@@ -12,21 +35,14 @@ class BreadcrumbView extends View
   lastParent: null
 
   initialize: (state) ->
-    pollTreeView = =>
-      {@treeView} = require(atom.packages.getLoadedPackage('tree-view').path)
-      if @treeView?
-        @treeViewScroller = @treeView.find('.tree-view-scroller')
-        @treeViewScroller.on 'scroll', @treeViewScrolled
-        @treeViewScrolled()
-        @breadcrumb.on 'click', '.btn', (e) =>
-          target = $(e.target).data('target')
-          item = @treeView.find("[data-path='#{target}']")
-          @scrollToItem(@treeView.find("[data-path='#{target}']"))
-
-      else
-        setTimeout pollTreeView, 100
-
-    pollTreeView()
+    requirePackages('tree-view').then ([@treeView]) ->
+      @treeViewScroller = @treeView.find('.tree-view-scroller')
+      @treeViewScroller.on 'scroll', @treeViewScrolled
+      @treeViewScrolled()
+      @breadcrumb.on 'click', '.btn', (e) =>
+        target = $(e.target).data('target')
+        item = @treeView.find("[data-path='#{target}']")
+        @scrollToItem(@treeView.find("[data-path='#{target}']"))
 
   show: ->
     @attach()
