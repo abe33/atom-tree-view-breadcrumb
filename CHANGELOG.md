@@ -1,3 +1,11 @@
+<a name="v0.2.1"></a>
+# v0.2.1 (2014-10-23)
+
+## :bug: Bug Fixes
+
+- Fix breadcrumb not displayed in latest Atom version ([6785eb1b](https://github.com/abe33/atom-tree-view-breadcrumb/commit/6785eb1b0233c50538785ea0cb3b08b187e546b9))
+- Fix requiring package by using a promise ([e599969f](https://github.com/abe33/atom-tree-view-breadcrumb/commit/e599969fc36ad651f926d69faf7612cdde9c527c))
+
 <a name="v0.2.0"></a>
 # v0.2.0 (2014-08-13)
 
