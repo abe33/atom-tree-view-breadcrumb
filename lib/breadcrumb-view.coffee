@@ -23,12 +23,12 @@ class BreadcrumbView extends View
 
   show: ->
     @attach()
-    @$treeView.addClass('with-breadcrumb')
+    @treeViewScroller.addClass('with-breadcrumb')
     @addClass('visible')
 
   hide: ->
     @removeClass('visible')
-    @$treeView.removeClass('with-breadcrumb')
+    @treeViewScroller.removeClass('with-breadcrumb')
     setTimeout((=> @detach()), 300)
 
   attach: ->
@@ -75,8 +75,6 @@ class BreadcrumbView extends View
 
   treeViewScrolled: =>
     scrollTop = @treeViewScroller.scrollTop()
-
-    console.log scrollTop
 
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
     currentParent = null

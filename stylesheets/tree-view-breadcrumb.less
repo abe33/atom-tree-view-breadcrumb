@@ -6,7 +6,7 @@
   transition: -webkit-transform 0.3s, height 0.3s;
 }
 
-.with-breadcrumb .tree-view-scroller {
+.with-breadcrumb.tree-view-scroller {
   -webkit-transform: translate(0,@breadcrumb-height);
   height: calc(~"100% - @{@breadcrumb-height}")
 }
@@ -16,6 +16,7 @@
   left: 0;
   right: 0;
   overflow-x: auto;
+  z-index: 2;
   transition: -webkit-transform 0.3s;
   -webkit-transform: translate(0,-@breadcrumb-height);
 
