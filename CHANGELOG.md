@@ -1,3 +1,11 @@
+<a name="v0.2.2"></a>
+# v0.2.2 (2014-10-29)
+
+## :bug: Bug Fixes
+
+- Fix issue with item offset returning null ([021cdce6](https://github.com/abe33/atom-tree-view-breadcrumb/commit/021cdce6b762d8f8731ba9bc14f9d9b40314ccb4))
+- Fix layout with tree-view-open-files package ([7a598afe](https://github.com/abe33/atom-tree-view-breadcrumb/commit/7a598afef4881f4ae30212b5933013a03d2838c1))
+
 <a name="v0.2.1"></a>
 # v0.2.1 (2014-10-23)
 
