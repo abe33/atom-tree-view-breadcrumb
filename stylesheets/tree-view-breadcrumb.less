@@ -8,10 +8,13 @@
 
 .with-breadcrumb.tree-view-scroller {
   -webkit-transform: translate(0,@breadcrumb-height);
-  height: calc(~"100% - @{@breadcrumb-height}")
+  -webkit-order: 2;
+  height: calc(~"100% - @{@breadcrumb-height}");
 }
 
 .tree-view-breadcrumb.tool-panel {
+  display: -webkit-flex;
+  -webkit-order: 1;
   position: absolute;
   left: 0;
   right: 0;
