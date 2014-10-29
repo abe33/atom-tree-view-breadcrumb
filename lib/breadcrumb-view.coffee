@@ -70,8 +70,10 @@ class BreadcrumbView extends View
 
   scrollToItem: (item) ->
     oldScroll = @treeViewScroller.scrollTop()
-    newScroll = item.offset().top + oldScroll - @breadcrumb.height()
-    @treeViewScroller.scrollTop(newScroll)
+    offset = item.offset()
+    if offset?
+      newScroll = offset.top + oldScroll - @breadcrumb.height()
+      @treeViewScroller.scrollTop(newScroll)
 
   treeViewScrolled: =>
     scrollTop = @treeViewScroller.scrollTop()
