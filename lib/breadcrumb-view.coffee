@@ -49,16 +49,15 @@ class BreadcrumbView extends View
     parents.unshift n for n in node.parents('.directory')
     parents.shift()
 
-    path = []
-
     parents.forEach (node, i) ->
-      label = $(node).children('.header').text()
-      path.push label
+      name = $(node).find('> .header > .name')
+      label = name.text()
+
       cls = 'btn'
       cls += ' btn-primary' if i is parents.length - 1
 
       html.push """
-        <div class='#{cls}' data-target='#{path.join('/')}'>
+        <div class='#{cls}' data-target='#{name[0].dataset.path}'>
           #{label}
         </div>
       """
@@ -73,7 +72,7 @@ class BreadcrumbView extends View
     offset = item.offset()
     if offset?
       newScroll = offset.top + oldScroll - @breadcrumb.height()
-      @treeViewScroller.scrollTop(newScroll)
+      @treeViewScroller.scrollTop(newScroll - @treeViewScroller.offset().top)
 
   treeViewScrolled: =>
     scrollTop = @treeViewScroller.scrollTop()
