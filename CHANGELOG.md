@@ -1,3 +1,10 @@
+<a name="v0.2.3"></a>
+# v0.2.3 (2014-11-03)
+
+## :bug: Bug Fixes
+
+- Fix breadcrumb button targets and adjust offset based on position of tree view ([75ddc04f](https://github.com/abe33/atom-tree-view-breadcrumb/commit/75ddc04f1a21189186db29f5ad0ee329811be5e0))
+
 <a name="v0.2.2"></a>
 # v0.2.2 (2014-10-29)
 
