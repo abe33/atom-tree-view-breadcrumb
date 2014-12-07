@@ -1,3 +1,19 @@
+<a name="0.3.0"></a>
+# 0.3.0 (2014-12-07)
+
+## :sparkles: Features
+
+- Add a setting to force the display of the project root ([f93679b7](https://github.com/abe33/atom-tree-view-breadcrumb/commit/f93679b7b520ec5194cd2728b9acb3d438a0c5df))
+- Add TravisCI config ([d22b44d4](https://github.com/abe33/atom-tree-view-breadcrumb/commit/d22b44d4fd4880acca2fc6ab0c01bb30448d8ddd))
+- Add a setting to force the visibility of the breadcrumb ([bf623d75](https://github.com/abe33/atom-tree-view-breadcrumb/commit/bf623d75fa378d6b7fd89b07e17c266725c5d83e))
+
+## :bug: Bug Fixes
+
+- Fix offset computation with tree-view-open-files ([4c030490](https://github.com/abe33/atom-tree-view-breadcrumb/commit/4c030490cfa5a6e367ac8bcd24228378df57ab5e))
+- Fix scrolling tree-view on breadcrumb click ([d3084bbf](https://github.com/abe33/atom-tree-view-breadcrumb/commit/d3084bbf3b32e263f19c3583411df583cf3ffd2d))
+- Fix invalid index computation for first visible item ([a5587bd6](https://github.com/abe33/atom-tree-view-breadcrumb/commit/a5587bd6d0b76c3e328276d9b782eb999e849bf3))
+- Fix attachment issues without project or tree view hidden ([14d41b6e](https://github.com/abe33/atom-tree-view-breadcrumb/commit/14d41b6e199244a8222eba090c44d678f6a4d2e6))
+
 <a name="v0.2.3"></a>
 # v0.2.3 (2014-11-03)
 
