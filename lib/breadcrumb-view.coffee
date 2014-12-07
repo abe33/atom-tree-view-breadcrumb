@@ -1,4 +1,5 @@
 {$, View} = require 'space-pen'
+{CompositeDisposable, Disposable} = require 'event-kit'
 
 module.exports =
 class BreadcrumbView extends View
@@ -12,29 +13,37 @@ class BreadcrumbView extends View
 
   lastFirstVisibleTreeItem: null
   lastParent: null
+  displayProjectRoot: false
 
   initialize: (treeViewPackage) ->
+    @subscriptions = new CompositeDisposable
+
     @breadcrumb.on 'click', '.btn', (e) =>
       target = $(e.target).data('target')
       item = @treeView.find("[data-path='#{target}']")
       @scrollToItem(@treeView.find("[data-path='#{target}']"))
 
+    @subscriptions.add new Disposable => @breadcrumb.off()
+
     workspaceElement = atom.views.getView(atom.workspace)
     if treeViewPackage.treeView
       @subscribeToTreeView(treeViewPackage.treeView)
 
-    atom.commands.add workspaceElement, 'tree-view:toggle', =>
+    @subscriptions.add atom.commands.add workspaceElement, 'tree-view:toggle', =>
       treeView = workspaceElement.querySelector('.tree-view')
       if treeView?
         @subscribeToTreeView($(treeView).view())
       else
         @unsubscribeFromTreeView()
 
-    atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
+    @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached
         @show()
       else if not visible and @attached and @breadcrumb.is(':empty')
         @hide()
+
+    @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRoot', (@displayProjectRoot) =>
+      @updateBreadcrumb(@lastParent)
 
   subscribeToTreeView: (@treeView) ->
     workspaceElement = atom.views.getView(atom.workspace)
@@ -47,7 +56,7 @@ class BreadcrumbView extends View
     @treeViewScrolled()
 
   unsubscribeFromTreeView: ->
-    @treeViewScroller?.off()
+    @treeViewScroller?.off('scroll', @treeViewScrolled)
     @treeViewScroller = null
     @treeView = null
 
@@ -70,6 +79,7 @@ class BreadcrumbView extends View
     @attached = false
 
   destroy: ->
+    @subscriptions.dispose()
     @detach()
 
   updateBreadcrumb: (node) ->
@@ -78,6 +88,10 @@ class BreadcrumbView extends View
     parents = []
     parents.unshift n for n in node.parents('.directory')
     parents.shift()
+
+    if @displayProjectRoot
+      root = @treeView.find('.header .name').first()
+      html.push "<div class='btn root' data-target='#{root.data('path')}'></div>"
 
     parents.forEach (node, i) ->
       name = $(node).find('> .header > .name')

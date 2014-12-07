@@ -25,7 +25,6 @@ describe "TreeViewBreadcrumb", ->
       treeView = $(workspaceElement.querySelector('.tree-view')).view()
 
       root = $(treeView.root)
-      # sampleJs = treeView.find('.file:contains(tree-view-breadcrumb.js)')
 
       expect(treeView.root.directory.watchSubscription).toBeTruthy()
 
@@ -136,3 +135,17 @@ describe "TreeViewBreadcrumb", ->
 
         it 'detaches the breadcrumb even without a scroll', ->
           waitsFor -> not workspaceElement.querySelector('.tree-view-breadcrumb')
+
+  describe 'when display project root option is enabled', ->
+    beforeEach ->
+      atom.config.set 'tree-view-breadcrumb.displayProjectRoot', true
+      treeView.moveDown()
+      treeView.expandDirectory()
+      treeView.scrollTop(100)
+
+      waitsForPromise -> atom.packages.activatePackage('tree-view-breadcrumb')
+      waitsFor ->
+        breadcrumb = workspaceElement.querySelector('.tree-view-breadcrumb')
+
+    it 'adds a button for the root in the breadcrumb', ->
+      expect(breadcrumb.querySelector('.btn.root')).toExist()

@@ -12,6 +12,7 @@
     "fs-plus": "^2.3.0",
     "temp": "~0.7.0",
     "wrench": "1.5.x",
-    "space-pen": "^4"
+    "space-pen": "^4",
+    "event-kit": "^0"
   }
 }

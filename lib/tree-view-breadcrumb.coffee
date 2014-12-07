@@ -36,6 +36,11 @@ module.exports =
       default: false
       description: "Keep the breadcrumb container visible even when there's no content."
 
+    displayProjectRoot:
+      type: 'boolean'
+      default: false
+      description: "Display the project root as an icon in the breadcrumb."
+
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
       @breadcrumbView = new BreadcrumbView(treeView)
