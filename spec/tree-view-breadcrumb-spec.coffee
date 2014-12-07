@@ -1,10 +1,4 @@
 {$, $$} = require 'space-pen'
-fs = require 'fs-plus'
-path = require 'path'
-temp = require('temp').track()
-wrench = require 'wrench'
-os = require 'os'
-{WorkspaceView} = require 'atom'
 
 waitsForFileToOpen = (causeFileToOpen) ->
   waitsFor (done) ->
