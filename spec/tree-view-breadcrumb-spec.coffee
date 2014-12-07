@@ -123,4 +123,4 @@ describe "TreeViewBreadcrumb", ->
           atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', false
 
         it 'detaches the breadcrumb even without a scroll', ->
-          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+          waitsFor -> not workspaceElement.querySelector('.tree-view-breadcrumb')
