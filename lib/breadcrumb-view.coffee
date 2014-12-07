@@ -3,7 +3,7 @@
 module.exports =
 class BreadcrumbView extends View
   @content: ->
-    path = atom.project?.getPath()
+    path = atom.project?.getPaths()[0]
     path = path.split('/').pop() if path?
 
     @div class: 'tree-view-breadcrumb tool-panel', =>
@@ -32,6 +32,7 @@ class BreadcrumbView extends View
 
   subscribeToTreeView: (@treeView) ->
     workspaceElement = atom.views.getView(atom.workspace)
+    @treeViewResizer = $(workspaceElement.querySelector('.tree-view-resizer'))
     @treeViewScroller = $(workspaceElement.querySelector('.tree-view-scroller'))
     @treeViewScroller.on 'scroll', @treeViewScrolled
     @treeViewScrolled()
@@ -52,7 +53,7 @@ class BreadcrumbView extends View
     setTimeout((=> @detach()), 300)
 
   attach: ->
-    @treeViewScroller.prepend(this)
+    @treeViewResizer.prepend(this)
     @attached = true
 
   detach: ->
@@ -94,7 +95,18 @@ class BreadcrumbView extends View
       newScroll = offset.top + oldScroll - @breadcrumb.height()
       @treeViewScroller.scrollTop(newScroll - @treeViewScroller.offset().top)
 
-  treeViewScrolled: =>
+  treeViewScrolled: => @requestUpdate()
+
+  requestUpdate: ->
+    return if @frameRequested
+
+    @frameRequested = true
+
+    requestAnimationFrame =>
+      @update()
+      @frameRequested = false
+
+  update: ->
     scrollTop = @treeViewScroller.scrollTop()
 
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
@@ -119,10 +131,8 @@ class BreadcrumbView extends View
 
   firstVisibleTreeItem: (scrollTop) ->
     itemHeight = @getItemHeight()
-    index = Math.ceil(scrollTop / itemHeight)
-    self = this
-    found = null
-    @treeView.find('.list-item.header, .list-item.file')[index]
+    index = Math.floor(scrollTop / itemHeight)
+    @treeViewScroller.find('.list-item.header, .list-item.file')[index]
 
   parentHeader: (node) ->
     $(node).parents('ol').first().parent().children('.header')[0]
