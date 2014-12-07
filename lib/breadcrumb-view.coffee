@@ -30,11 +30,20 @@ class BreadcrumbView extends View
       else
         @unsubscribeFromTreeView()
 
+    atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
+      if visible and not @attached
+        @show()
+      else if not visible and @attached and @breadcrumb.is(':empty')
+        @hide()
+
   subscribeToTreeView: (@treeView) ->
     workspaceElement = atom.views.getView(atom.workspace)
     @treeViewResizer = $(workspaceElement.querySelector('.tree-view-resizer'))
     @treeViewScroller = $(workspaceElement.querySelector('.tree-view-scroller'))
     @treeViewScroller.on 'scroll', @treeViewScrolled
+
+    @show() if atom.config.get('tree-view-breadcrumb.keepBreadcrumbVisible')
+
     @treeViewScrolled()
 
   unsubscribeFromTreeView: ->
@@ -121,7 +130,7 @@ class BreadcrumbView extends View
 
     if !@attached and scrollTop > 0 and !@breadcrumb.is(':empty')
       @show()
-    else if @attached and (scrollTop is 0 or @breadcrumb.is(':empty'))
+    else if @attached and (scrollTop is 0 or @breadcrumb.is(':empty')) and not atom.config.get('tree-view-breadcrumb.keepBreadcrumbVisible')
       @lastFirstVisibleTreeItem = null
       @lastParent = null
       @hide()

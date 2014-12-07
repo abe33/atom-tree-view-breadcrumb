@@ -17,6 +17,8 @@ describe "TreeViewBreadcrumb", ->
   [treeView, root, sampleJs, sampleTxt, workspaceElement, treeViewPackage] = []
 
   beforeEach ->
+    atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', false
+
     workspaceElement = atom.views.getView(atom.workspace)
     atom.workspaceView = workspaceElement.__spacePenView
     jasmine.attachToDOM(workspaceElement)
@@ -91,3 +93,40 @@ describe "TreeViewBreadcrumb", ->
 
       it 'does not add the breadcrumb', ->
         expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+
+  describe 'when keep breadcrumb visible option is enabled', ->
+    describe 'before the view creation', ->
+      beforeEach ->
+        atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', true
+
+        waitsForPromise -> atom.packages.activatePackage('tree-view-breadcrumb')
+
+      it 'attaches the breadcrumb even without a scroll', ->
+        waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
+
+      describe 'scrolling back and forth', ->
+        beforeEach ->
+          treeView.moveDown()
+          treeView.expandDirectory()
+          treeView.scrollTop(100)
+          treeView.scrollTop(0)
+
+        it 'leaves the breadcrumb even when there is no more content', ->
+          waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
+
+    describe 'after the view creation', ->
+      beforeEach ->
+        waitsForPromise -> atom.packages.activatePackage('tree-view-breadcrumb')
+
+        runs ->
+          atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', true
+
+      it 'attaches the breadcrumb even without a scroll', ->
+        waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
+
+      describe 'then disabling it', ->
+        beforeEach ->
+          atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', false
+
+        it 'detaches the breadcrumb even without a scroll', ->
+          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()

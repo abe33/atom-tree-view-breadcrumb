@@ -25,8 +25,16 @@ requirePackages = (packages...) ->
 
 module.exports =
   breadcrumbView: null
-  configDefaults:
-    scrollToLastItem: true
+  config:
+    scrollToLastItem:
+      type: 'boolean'
+      default: true
+      description: 'When the breadcrumb content is wider than its container, does it scroll horizontally to make the last item visible.'
+
+    keepBreadcrumbVisible:
+      type: 'boolean'
+      default: false
+      description: "Keep the breadcrumb container visible even when there's no content."
 
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
