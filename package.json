@@ -6,7 +6,12 @@
   "repository": "https://github.com/abe33/atom-tree-view-breadcrumb",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">=0.153.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "fs-plus": "^2.3.0",
+    "temp": "~0.7.0",
+    "wrench": "1.5.x",
+    "space-pen": "^4"
+  }
 }
