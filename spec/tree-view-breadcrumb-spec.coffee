@@ -8,7 +8,7 @@ waitsForFileToOpen = (causeFileToOpen) ->
     causeFileToOpen()
 
 describe "TreeViewBreadcrumb", ->
-  [treeView, root, sampleJs, sampleTxt, workspaceElement, treeViewPackage] = []
+  [treeView, root, sampleJs, sampleTxt, workspaceElement, treeViewPackage, breadcrumb] = []
 
   beforeEach ->
     atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', false
@@ -48,6 +48,17 @@ describe "TreeViewBreadcrumb", ->
 
         it 'attaches the breadcrumb', ->
           waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
+
+        describe 'clicking on the breadcrumb buttons', ->
+          beforeEach ->
+            waitsFor ->
+              breadcrumb =  workspaceElement.querySelector('.tree-view-breadcrumb')
+
+            runs ->
+              $(breadcrumb).find('.btn:first-child').click()
+
+          it 'scrolls back the tree-view to the top', ->
+            expect(treeView.scrollTop()).toBeLessThan(100)
 
   describe "when the tree view is visible", ->
     beforeEach ->

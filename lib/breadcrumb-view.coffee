@@ -16,8 +16,8 @@ class BreadcrumbView extends View
   initialize: (treeViewPackage) ->
     @breadcrumb.on 'click', '.btn', (e) =>
       target = $(e.target).data('target')
-      item = @$treeView.find("[data-path='#{target}']")
-      @scrollToItem(@$treeView.find("[data-path='#{target}']"))
+      item = @treeView.find("[data-path='#{target}']")
+      @scrollToItem(@treeView.find("[data-path='#{target}']"))
 
     workspaceElement = atom.views.getView(atom.workspace)
     if treeViewPackage.treeView
