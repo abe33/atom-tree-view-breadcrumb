@@ -13,6 +13,7 @@
     "temp": "~0.7.0",
     "wrench": "1.5.x",
     "space-pen": "^4",
-    "event-kit": "^0"
+    "event-kit": "^0",
+    "atom-utils": "0.2.x"
   }
 }

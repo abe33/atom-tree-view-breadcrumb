@@ -7,6 +7,11 @@ waitsForFileToOpen = (causeFileToOpen) ->
       done()
     causeFileToOpen()
 
+fakeEvent =
+  stopImmediatePropagation: ->
+  stopPropagation: ->
+  preventDefault: ->
+
 describe "TreeViewBreadcrumb", ->
   [treeView, root, sampleJs, sampleTxt, workspaceElement, treeViewPackage, breadcrumb] = []
 
@@ -14,7 +19,6 @@ describe "TreeViewBreadcrumb", ->
     atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', false
 
     workspaceElement = atom.views.getView(atom.workspace)
-    atom.workspaceView = workspaceElement.__spacePenView
     jasmine.attachToDOM(workspaceElement)
     workspaceElement.style.height = '100px'
 
@@ -41,11 +45,11 @@ describe "TreeViewBreadcrumb", ->
       describe 'and the view is scrolled', ->
         beforeEach ->
           atom.commands.dispatch workspaceElement, 'tree-view:toggle'
-          treeView.moveDown()
+          treeView.moveDown(fakeEvent)
           treeView.expandDirectory()
           treeView.scrollTop(100)
 
-        it 'attaches the breadcrumb', ->
+        fit 'attaches the breadcrumb', ->
           waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
 
         describe 'clicking on the breadcrumb buttons', ->
@@ -69,7 +73,7 @@ describe "TreeViewBreadcrumb", ->
 
     describe 'when the tree view is scrolled', ->
       beforeEach ->
-        treeView.moveDown()
+        treeView.moveDown(fakeEvent)
         treeView.expandDirectory()
         treeView.scrollTop(100)
 
@@ -110,7 +114,7 @@ describe "TreeViewBreadcrumb", ->
 
       describe 'scrolling back and forth', ->
         beforeEach ->
-          treeView.moveDown()
+          treeView.moveDown(fakeEvent)
           treeView.expandDirectory()
           treeView.scrollTop(100)
           treeView.scrollTop(0)
@@ -139,7 +143,7 @@ describe "TreeViewBreadcrumb", ->
   describe 'when display project root option is enabled', ->
     beforeEach ->
       atom.config.set 'tree-view-breadcrumb.displayProjectRoot', true
-      treeView.moveDown()
+      treeView.moveDown(fakeEvent)
       treeView.expandDirectory()
       treeView.scrollTop(100)
 

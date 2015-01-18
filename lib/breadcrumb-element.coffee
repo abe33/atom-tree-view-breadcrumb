@@ -1,13 +1,15 @@
-{$, View} = require 'space-pen'
 {CompositeDisposable, Disposable} = require 'event-kit'
+{SpacePenDSL, EventsDelegation} = require 'atom-utils'
 
-module.exports =
-class BreadcrumbView extends View
+class BreadcrumbElement extends HTMLElement
+  SpacePenDSL.includeInto(this)
+  EventsDelegation.includeInto(this)
+
   @content: ->
     path = atom.project?.getPaths()[0]
     path = path.split('/').pop() if path?
 
-    @div class: 'tree-view-breadcrumb tool-panel', =>
+    @tag 'atom-panel', class: 'tree-view-breadcrumb tool-panel', =>
       @div outlet: 'breadcrumb', class: 'btn-group', =>
         @div class: 'btn', path
 
@@ -18,23 +20,17 @@ class BreadcrumbView extends View
   initialize: (treeViewPackage) ->
     @subscriptions = new CompositeDisposable
 
-    @breadcrumb.on 'click', '.btn', (e) =>
-      target = $(e.target).data('target')
-      item = @treeView.find("[data-path='#{target}']")
-      @scrollToItem(@treeView.find("[data-path='#{target}']"))
+    @subscriptions.add @subscribeTo @breadcrumb, '.btn',
+      'click': (e) =>
+        target = e.target.dataset.target
+        item = @treeView.element.querySelector("[data-path='#{target}']")
+        @scrollToItem(@treeView.element.querySelector("[data-path='#{target}']"))
 
-    @subscriptions.add new Disposable => @breadcrumb.off()
+    @subscribeToTreeView(treeViewPackage.treeView) if treeViewPackage.treeView?
 
-    workspaceElement = atom.views.getView(atom.workspace)
-    if treeViewPackage.treeView
-      @subscribeToTreeView(treeViewPackage.treeView)
-
-    @subscriptions.add atom.commands.add workspaceElement, 'tree-view:toggle', =>
-      treeView = workspaceElement.querySelector('.tree-view')
-      if treeView?
-        @subscribeToTreeView($(treeView).view())
-      else
-        @unsubscribeFromTreeView()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'tree-view:toggle', =>
+      if treeViewPackage.treeView?
+        @subscribeToTreeView(treeView)
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached
@@ -47,16 +43,19 @@ class BreadcrumbView extends View
 
   subscribeToTreeView: (@treeView) ->
     workspaceElement = atom.views.getView(atom.workspace)
-    @treeViewResizer = $(workspaceElement.querySelector('.tree-view-resizer'))
-    @treeViewScroller = $(workspaceElement.querySelector('.tree-view-scroller'))
-    @treeViewScroller.on 'scroll', @treeViewScrolled
+    @treeViewResizer = workspaceElement.querySelector('.tree-view-resizer')
+    @treeViewScroller = workspaceElement.querySelector('.tree-view-scroller')
+
+    @treeSubscription = @subscribeTo @treeViewScroller,
+      'scroll': (e) => @treeViewScrolled(e)
 
     @show() if atom.config.get('tree-view-breadcrumb.keepBreadcrumbVisible')
 
     @treeViewScrolled()
 
   unsubscribeFromTreeView: ->
-    @treeViewScroller?.off('scroll', @treeViewScrolled)
+    @treeSubscription.dispose()
+    @treeViewResizer = null
     @treeViewScroller = null
     @treeView = null
 
@@ -83,7 +82,6 @@ class BreadcrumbView extends View
     @detach()
 
   updateBreadcrumb: (node) ->
-    node = $(node)
     html = []
     parents = []
     parents.unshift n for n in node.parents('.directory')
@@ -160,3 +158,6 @@ class BreadcrumbView extends View
 
   parentHeader: (node) ->
     $(node).parents('ol').first().parent().children('.header')[0]
+
+
+module.exports = BreadcrumbElement = document.registerElement 'tree-view-breadcrumb', prototype: BreadcrumbElement.prototype
