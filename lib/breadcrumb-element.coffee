@@ -1,9 +1,9 @@
 {CompositeDisposable, Disposable} = require 'event-kit'
-{SpacePenDSL, EventsDelegation} = require 'atom-utils'
+{AncestorsMethods, SpacePenDSL, EventsDelegation} = require 'atom-utils'
 
 class BreadcrumbElement extends HTMLElement
-  SpacePenDSL.includeInto(this)
   EventsDelegation.includeInto(this)
+  SpacePenDSL.includeInto(this)
 
   @content: ->
     path = atom.project?.getPaths()[0]
@@ -30,12 +30,12 @@ class BreadcrumbElement extends HTMLElement
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'tree-view:toggle', =>
       if treeViewPackage.treeView?
-        @subscribeToTreeView(treeView)
+        @subscribeToTreeView(treeViewPackage.treeView)
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached
         @show()
-      else if not visible and @attached and @breadcrumb.is(':empty')
+      else if not visible and @attached and @breadcrumb.matches(':empty')
         @hide()
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRoot', (@displayProjectRoot) =>
@@ -61,20 +61,20 @@ class BreadcrumbElement extends HTMLElement
 
   show: ->
     @attach()
-    @treeViewScroller.addClass('with-breadcrumb')
-    @addClass('visible')
+    @treeViewScroller.classList.add('with-breadcrumb')
+    @classList.add('visible')
 
   hide: ->
-    @removeClass('visible')
-    @treeViewScroller.removeClass('with-breadcrumb')
+    @classList.remove('visible')
+    @treeViewScroller.classList.remove('with-breadcrumb')
     setTimeout((=> @detach()), 300)
 
   attach: ->
-    @treeViewResizer.prepend(this)
+    @treeViewResizer.insertBefore(this, @treeViewResizer.firstChild)
     @attached = true
 
   detach: ->
-    super
+    @treeViewResizer.removeChild(this) if @parentNode? and @parentNode is @treeViewResizer
     @attached = false
 
   destroy: ->
@@ -82,9 +82,11 @@ class BreadcrumbElement extends HTMLElement
     @detach()
 
   updateBreadcrumb: (node) ->
+    return unless node?
+
     html = []
     parents = []
-    parents.unshift n for n in node.parents('.directory')
+    parents.unshift n for n in AncestorsMethods.parents(node, '.directory')
     parents.shift()
 
     if @displayProjectRoot
@@ -92,30 +94,30 @@ class BreadcrumbElement extends HTMLElement
       html.push "<div class='btn root' data-target='#{root.data('path')}'></div>"
 
     parents.forEach (node, i) ->
-      name = $(node).find('> .header > .name')
-      label = name.text()
+      name = node.querySelector('.header > .name')
+      label = name.textContent
 
       cls = 'btn'
       cls += ' btn-primary' if i is parents.length - 1
 
       html.push """
-        <div class='#{cls}' data-target='#{name[0].dataset.path}'>
+        <div class='#{cls}' data-target='#{name.dataset.path}'>
           #{label}
         </div>
       """
 
-    @breadcrumb.html html.join('')
+    @breadcrumb.innerHTML = html.join('')
 
     if atom.config.get('tree-view-breadcrumb.scrollToLastItem')
-      @scrollLeft(@element.scrollWidth)
+      @scrollLeft = @scrollWidth
 
   scrollToItem: (item) ->
-    oldScroll = @treeViewScroller.scrollTop()
-    scrollerOffset = @treeViewScroller.offset()
-    offset = item.offset()
+    oldScroll = @treeViewScroller.scrollTop
+    scrollerOffset = @treeViewScroller.getBoundingClientRect()
+    offset = item.getBoundingClientRect()
     if offset?
       newScroll = (offset.top - scrollerOffset.top) + oldScroll
-      @treeViewScroller.scrollTop(newScroll)
+      @treeViewScroller.scrollTop = newScroll
 
   treeViewScrolled: => @requestUpdate()
 
@@ -129,21 +131,20 @@ class BreadcrumbElement extends HTMLElement
       @frameRequested = false
 
   update: ->
-    scrollTop = @treeViewScroller.scrollTop()
+    scrollTop = @treeViewScroller.scrollTop
 
     currentFirstVisibleTreeItem = @firstVisibleTreeItem(scrollTop)
     currentParent = null
     if currentFirstVisibleTreeItem? and currentFirstVisibleTreeItem isnt @lastFirstVisibleTreeItem
       @lastFirstVisibleTreeItem = currentFirstVisibleTreeItem
       currentParent = @parentHeader(currentFirstVisibleTreeItem)
-
       if currentParent isnt @lastParent
         @updateBreadcrumb(currentParent)
         @lastParent = currentParent
 
-    if !@attached and scrollTop > 0 and !@breadcrumb.is(':empty')
+    if !@attached and scrollTop > 0 and !@breadcrumb.matches(':empty')
       @show()
-    else if @attached and (scrollTop is 0 or @breadcrumb.is(':empty')) and not atom.config.get('tree-view-breadcrumb.keepBreadcrumbVisible')
+    else if @attached and (scrollTop is 0 or @breadcrumb.matches(':empty')) and not atom.config.get('tree-view-breadcrumb.keepBreadcrumbVisible')
       @lastFirstVisibleTreeItem = null
       @lastParent = null
       @hide()
@@ -154,10 +155,9 @@ class BreadcrumbElement extends HTMLElement
   firstVisibleTreeItem: (scrollTop) ->
     itemHeight = @getItemHeight()
     index = Math.floor(scrollTop / itemHeight)
-    @treeViewScroller.find('.list-item.header, .list-item.file')[index]
+    @treeViewScroller.querySelectorAll('.list-item.header, .list-item.file')[index]
 
   parentHeader: (node) ->
-    $(node).parents('ol').first().parent().children('.header')[0]
-
+    AncestorsMethods.parents(node, 'ol')[0].parentNode.querySelector('.header')
 
 module.exports = BreadcrumbElement = document.registerElement 'tree-view-breadcrumb', prototype: BreadcrumbElement.prototype

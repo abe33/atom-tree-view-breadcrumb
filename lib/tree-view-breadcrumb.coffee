@@ -2,7 +2,7 @@ BreadcrumbElement = require './breadcrumb-element'
 {requirePackages} = require 'atom-utils'
 
 module.exports =
-  breadcrumbView: null
+  breadcrumbElement: null
   config:
     scrollToLastItem:
       type: 'boolean'
@@ -21,13 +21,11 @@ module.exports =
 
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
-      @breadcrumbView = new BreadcrumbElement
-      @breadcrumbView.initialize(treeView)
+      @breadcrumbElement = new BreadcrumbElement
+      @breadcrumbElement.initialize(treeView)
     .catch (reason)->
       console.log reason
 
   deactivate: ->
-    @breadcrumbView?.destroy()
-
-  serialize: ->
-    breadcrumbState: @breadcrumbView?.serialize()
+    @breadcrumbElement?.destroy()
+    @breadcrumbElement = null
