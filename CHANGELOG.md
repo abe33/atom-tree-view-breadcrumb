@@ -1,3 +1,13 @@
+
+<a name="0.4.0"></a>
+# 0.4.0 (2015-01-20)
+
+Includes a rewrite using custom element instead of space-pen views.
+
+## :bug: Bug Fixes
+
+- Fix broken package and deprecations ([463fcccf](https://github.com/abe33/atom-tree-view-breadcrumb/commit/463fcccf22e3187cfd01e82d76c7e8a11729d754))
+
 <a name="0.3.0"></a>
 # 0.3.0 (2014-12-07)
 
