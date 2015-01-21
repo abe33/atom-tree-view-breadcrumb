@@ -99,7 +99,23 @@ describe "TreeViewBreadcrumb", ->
           expect(breadcrumbElement.classList.contains('visible')).toBeFalsy()
 
           advanceClock(350)
-          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExi
+          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+
+    describe 'when the tree view is toggled', ->
+      beforeEach ->
+        atom.commands.dispatch(workspaceElement, 'tree-view:toggle')
+
+      it 'hides the breadcrumb', ->
+        expect(breadcrumbElement.classList.contains('visible')).toBeFalsy()
+        expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+
+      describe 'several times', ->
+        beforeEach ->
+          atom.commands.dispatch(workspaceElement, 'tree-view:toggle')
+
+        it 'attaches the breadcrumb again', ->
+          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).toExist()
+          expect(breadcrumbElement.classList.contains('visible')).toBeTruthy()
 
   describe "when the project has no path", ->
     beforeEach ->
