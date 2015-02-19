@@ -29,8 +29,11 @@ class BreadcrumbElement extends HTMLElement
     @subscribeToTreeView(treeViewPackage.treeView) if treeViewPackage.treeView?
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'tree-view:toggle', =>
-      if treeViewPackage.treeView?
-        @subscribeToTreeView(treeViewPackage.treeView)
+      requestAnimationFrame =>
+        if document.body.querySelector('.tree-view-resizer')?
+          @subscribeToTreeView(treeViewPackage.treeView)
+        else
+          @unsubscribeFromTreeView()
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached
