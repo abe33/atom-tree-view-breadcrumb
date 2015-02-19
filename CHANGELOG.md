@@ -1,3 +1,9 @@
+<a name="v0.4.1"></a>
+# v0.4.1 (2015-02-19)
+
+## :bug: Bug Fixes
+
+- Fix error raised when toggling the tree view ([8c9ea034](https://github.com/abe33/atom-tree-view-breadcrumb/commit/8c9ea0346bb9a21d869b76951712b2148c3a85a0), [#10](https://github.com/abe33/atom-tree-view-breadcrumb/issues/10))
 
 <a name="0.4.0"></a>
 # 0.4.0 (2015-01-20)
