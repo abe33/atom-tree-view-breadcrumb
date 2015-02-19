@@ -17,7 +17,7 @@ class BreadcrumbElement extends HTMLElement
   lastParent: null
   displayProjectRoot: false
 
-  initialize: (treeViewPackage) ->
+  initialize: (@treeViewPackage) ->
     @subscriptions = new CompositeDisposable
 
     @subscriptions.add @subscribeTo @breadcrumb, '.btn',
@@ -26,12 +26,11 @@ class BreadcrumbElement extends HTMLElement
         item = @treeView.element.querySelector("[data-path='#{target}']")
         @scrollToItem(@treeView.element.querySelector("[data-path='#{target}']"))
 
-    @subscribeToTreeView(treeViewPackage.treeView) if treeViewPackage.treeView?
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'tree-view:toggle', =>
       requestAnimationFrame =>
-        if document.body.querySelector('.tree-view-resizer')?
-          @subscribeToTreeView(treeViewPackage.treeView)
+        if @hasTreeView()
+          @subscribeToTreeView(@treeViewPackage.treeView)
         else
           @unsubscribeFromTreeView()
 
@@ -44,7 +43,14 @@ class BreadcrumbElement extends HTMLElement
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRoot', (@displayProjectRoot) =>
       @updateBreadcrumb(@lastParent)
 
+    requestAnimationFrame =>
+      @subscribeToTreeView(@treeViewPackage.treeView) if @hasTreeView()
+
+  hasTreeView: ->
+    @treeViewPackage.treeView? and document.body.querySelector('.tree-view-resizer')?
+
   subscribeToTreeView: (@treeView) ->
+    return if @treeSubscription?
     workspaceElement = atom.views.getView(atom.workspace)
     @treeViewResizer = workspaceElement.querySelector('.tree-view-resizer')
     @treeViewScroller = workspaceElement.querySelector('.tree-view-scroller')
@@ -57,7 +63,9 @@ class BreadcrumbElement extends HTMLElement
     @treeViewScrolled()
 
   unsubscribeFromTreeView: ->
+    return unless @treeSubscription?
     @treeSubscription.dispose()
+    @treeSubscription = null
     @treeViewResizer = null
     @treeViewScroller = null
     @treeView = null
