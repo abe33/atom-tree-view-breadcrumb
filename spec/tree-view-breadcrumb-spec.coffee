@@ -29,14 +29,13 @@ describe "TreeViewBreadcrumb", ->
     jasmine.attachToDOM(workspaceElement)
     workspaceElement.style.height = '100px'
 
-    waitsForPromise -> atom.packages.activatePackage("tree-view")
+    waitsForPromise -> atom.packages.activatePackage("tree-view").then (pkg) ->
+      treeView = pkg.mainModule.treeView
 
     runs ->
-      treeView = $(workspaceElement.querySelector('.tree-view')).view()
+      root = $(treeView.roots[0])
 
-      root = $(treeView.root)
-
-      expect(treeView.root.directory.watchSubscription).toBeTruthy()
+      expect(treeView.roots[0].directory.watchSubscription).toBeTruthy()
 
     waitsForPromise ->
       atom.packages.activatePackage('tree-view-breadcrumb')
@@ -47,7 +46,7 @@ describe "TreeViewBreadcrumb", ->
 
   describe "when the tree-view is hidden", ->
     it "does not attach the breadcrumb", ->
-      expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+      expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
     describe 'and the view is scrolled', ->
       beforeEach ->
@@ -59,12 +58,10 @@ describe "TreeViewBreadcrumb", ->
         runs -> nextAnimationFrame()
 
       it 'attaches the breadcrumb', ->
-        expect(workspaceElement.querySelector('.tree-view-breadcrumb')).toExist()
+        expect(workspaceElement.querySelector('tree-view-breadcrumb')).toExist()
 
       describe 'clicking on the breadcrumb buttons', ->
         beforeEach ->
-          breadcrumbElement =  workspaceElement.querySelector('.tree-view-breadcrumb')
-
           click(breadcrumbElement.querySelector('.btn:first-child'))
 
         it 'scrolls back the tree-view to the top', ->
@@ -73,7 +70,7 @@ describe "TreeViewBreadcrumb", ->
   describe "when the tree view is visible", ->
     describe 'with no possible scroll', ->
       it "does not attach the breadcrumb", ->
-        expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+        expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
     describe 'when the tree view is scrolled', ->
       beforeEach ->
@@ -85,7 +82,7 @@ describe "TreeViewBreadcrumb", ->
         runs -> nextAnimationFrame()
 
       it 'attaches the breadcrumb', ->
-        expect(workspaceElement.querySelector('.tree-view-breadcrumb')).toExist()
+        expect(workspaceElement.querySelector('tree-view-breadcrumb')).toExist()
         expect(breadcrumbElement.classList.contains('visible')).toBeTruthy()
 
       describe 'then scrolling back up', ->
@@ -99,7 +96,7 @@ describe "TreeViewBreadcrumb", ->
           expect(breadcrumbElement.classList.contains('visible')).toBeFalsy()
 
           advanceClock(350)
-          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+          expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
     describe 'when the tree view is toggled', ->
       beforeEach ->
@@ -107,14 +104,14 @@ describe "TreeViewBreadcrumb", ->
 
       it 'hides the breadcrumb', ->
         expect(breadcrumbElement.classList.contains('visible')).toBeFalsy()
-        expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+        expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
       describe 'several times', ->
         beforeEach ->
           atom.commands.dispatch(workspaceElement, 'tree-view:toggle')
 
         it 'attaches the breadcrumb again', ->
-          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).toExist()
+          expect(workspaceElement.querySelector('tree-view-breadcrumb')).toExist()
           expect(breadcrumbElement.classList.contains('visible')).toBeTruthy()
 
   describe "when the project has no path", ->
@@ -127,7 +124,7 @@ describe "TreeViewBreadcrumb", ->
       waitsForPromise -> atom.packages.activatePackage('tree-view-breadcrumb')
 
     it 'does not add the breadcrumb', ->
-      expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+      expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
   describe 'when keep breadcrumb visible option is enabled', ->
     describe 'before the view creation', ->
@@ -135,9 +132,9 @@ describe "TreeViewBreadcrumb", ->
         atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', true
 
       it 'attaches the breadcrumb even without a scroll', ->
-        waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
+        waitsFor -> workspaceElement.querySelector('tree-view-breadcrumb')
         runs ->
-          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).toExist()
+          expect(workspaceElement.querySelector('tree-view-breadcrumb')).toExist()
 
       describe 'scrolling back and forth', ->
         beforeEach ->
@@ -150,14 +147,14 @@ describe "TreeViewBreadcrumb", ->
           runs -> nextAnimationFrame()
 
         it 'leaves the breadcrumb even when there is no more content', ->
-          waitsFor -> workspaceElement.querySelector('.tree-view-breadcrumb')
+          waitsFor -> workspaceElement.querySelector('tree-view-breadcrumb')
 
     describe 'after the view creation', ->
       beforeEach ->
         atom.config.set 'tree-view-breadcrumb.keepBreadcrumbVisible', true
 
       it 'attaches the breadcrumb even without a scroll', ->
-        expect(workspaceElement.querySelector('.tree-view-breadcrumb')).toExist()
+        expect(workspaceElement.querySelector('tree-view-breadcrumb')).toExist()
 
       describe 'then disabling it', ->
         beforeEach ->
@@ -170,7 +167,7 @@ describe "TreeViewBreadcrumb", ->
 
         it 'detaches the breadcrumb even without a scroll', ->
           advanceClock(300)
-          expect(workspaceElement.querySelector('.tree-view-breadcrumb')).not.toExist()
+          expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
   describe 'when display project root option is enabled', ->
     beforeEach ->
@@ -183,5 +180,5 @@ describe "TreeViewBreadcrumb", ->
       runs -> nextAnimationFrame()
 
     it 'adds a button for the root in the breadcrumb', ->
-      breadcrumb = workspaceElement.querySelector('.tree-view-breadcrumb')
+      breadcrumb = workspaceElement.querySelector('tree-view-breadcrumb')
       expect(breadcrumb.querySelector('.btn.root')).toExist()
