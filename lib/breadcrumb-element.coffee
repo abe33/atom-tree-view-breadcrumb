@@ -34,7 +34,7 @@ class BreadcrumbElement extends HTMLElement
     #       @unsubscribeFromTreeView()
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
-      if visible and not @attached
+      if visible and not @attached and @treeViewResizer?
         @show()
       else if not visible and @attached and @breadcrumb.matches(':empty')
         @hide()
