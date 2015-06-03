@@ -7,7 +7,7 @@ module.exports =
     scrollToLastItem:
       type: 'boolean'
       default: true
-      description: 'When the breadcrumb content is wider than its container, does it scroll horizontally to make the last item visible.'
+      description: 'When the breadcrumb content gets wider than its container, it will scroll horizontally to display the last directory in the path.'
 
     keepBreadcrumbVisible:
       type: 'boolean'
@@ -22,7 +22,7 @@ module.exports =
     pathStyle:
       type: 'boolean'
       default: false
-      description: "Display the breadcrumb using the style of unix paths with / as separator"
+      description: "Display the breadcrumb using the style of unix paths with / as separator."
 
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
