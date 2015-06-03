@@ -42,6 +42,10 @@ describe "TreeViewBreadcrumb", ->
       .then (pkg) ->
         breadcrumb = pkg.mainModule
 
+    waitsFor -> nextAnimationFrame isnt noAnimationFrame
+
+    runs -> nextAnimationFrame()
+
     waitsFor -> breadcrumbElement = breadcrumb.breadcrumbElement
 
   describe "when the tree-view is hidden", ->
@@ -101,6 +105,7 @@ describe "TreeViewBreadcrumb", ->
     describe 'when the tree view is toggled', ->
       beforeEach ->
         atom.commands.dispatch(workspaceElement, 'tree-view:toggle')
+        nextAnimationFrame()
 
       it 'hides the breadcrumb', ->
         expect(breadcrumbElement.classList.contains('visible')).toBeFalsy()
@@ -109,6 +114,9 @@ describe "TreeViewBreadcrumb", ->
       describe 'several times', ->
         beforeEach ->
           atom.commands.dispatch(workspaceElement, 'tree-view:toggle')
+          nextAnimationFrame()
+
+          waitsFor -> workspaceElement.querySelector('tree-view-breadcrumb')
 
         it 'attaches the breadcrumb again', ->
           expect(workspaceElement.querySelector('tree-view-breadcrumb')).toExist()
