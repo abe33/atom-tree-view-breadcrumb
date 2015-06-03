@@ -82,6 +82,7 @@ class BreadcrumbElement extends HTMLElement
   attach: ->
     @treeViewResizer.insertBefore(this, @treeViewResizer.firstChild)
     @attached = true
+    @treeViewPackage.treeView.scrollToEntry(@treeViewPackage.treeView.selectedEntry())
 
   detach: ->
     @treeViewResizer.removeChild(this) if @parentNode? and @parentNode is @treeViewResizer
