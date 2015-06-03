@@ -33,6 +33,9 @@ class BreadcrumbElement extends HTMLElement
     #     else
     #       @unsubscribeFromTreeView()
 
+    @subscriptions.add atom.config.observe 'tree-view-breadcrumb.pathStyle', (pathStyle) =>
+      @classList.toggle('path-style', pathStyle)
+
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached and @treeViewResizer?
         @show()

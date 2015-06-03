@@ -19,6 +19,11 @@ module.exports =
       default: false
       description: "Display the project root as an icon in the breadcrumb."
 
+    pathStyle:
+      type: 'boolean'
+      default: false
+      description: "Display the breadcrumb using the style of unix paths with / as separator"
+
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
       @breadcrumbElement = new BreadcrumbElement
