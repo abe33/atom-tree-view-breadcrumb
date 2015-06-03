@@ -1,3 +1,18 @@
+<a name="v0.5.0"></a>
+# v0.5.0 (2015-06-03)
+
+## :sparkles: Features
+
+- Add a setting to switch the style of the breadcrumb ([f162fb60](https://github.com/abe33/atom-tree-view-breadcrumb/commit/f162fb60a4f734bc89f46d771437d72bd58b426c), [#3](https://github.com/abe33/atom-tree-view-breadcrumb/issues/3))  <br>When this setting is enabled the breadcrumb will take the form of a
+  unix path with / as separator.
+
+## :bug: Bug Fixes
+
+- Fix selected entry hidden when breadcrumb appear ([4fe09bfc](https://github.com/abe33/atom-tree-view-breadcrumb/commit/4fe09bfc69213efb630d58f5496e0122a86b8438), [#7](https://github.com/abe33/atom-tree-view-breadcrumb/issues/7))
+- Fix a measuring issue on one light/dark theme ([97afd401](https://github.com/abe33/atom-tree-view-breadcrumb/commit/97afd40163c03a33eaaaebf83d9cd6e8768f09a2))
+- Prevent error when trying to attach the view in setting callback ([07627ba8](https://github.com/abe33/atom-tree-view-breadcrumb/commit/07627ba8772311856b16f8385a02942fc998a251))
+- Prevent errors when opening a window without tree view ([b6abda34](https://github.com/abe33/atom-tree-view-breadcrumb/commit/b6abda3491cc763f1af2df420fe6377b334e8cb3))
+
 <a name="v0.4.1"></a>
 # v0.4.1 (2015-02-19)
 
