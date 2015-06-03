@@ -26,13 +26,12 @@ class BreadcrumbElement extends HTMLElement
         item = @treeView.element.querySelector("[data-path='#{target}']")
         @scrollToItem(@treeView.element.querySelector("[data-path='#{target}']"))
 
-
-    @subscriptions.add atom.commands.add 'atom-workspace', 'tree-view:toggle', =>
-      requestAnimationFrame =>
-        if @hasTreeView()
-          @subscribeToTreeView(@treeViewPackage.treeView)
-        else
-          @unsubscribeFromTreeView()
+    # @subscriptions.add atom.commands.add 'atom-workspace', 'tree-view:toggle', =>
+    #   requestAnimationFrame =>
+    #     if @hasTreeView()
+    #       @subscribeToTreeView(@treeViewPackage.treeView)
+    #     else
+    #       @unsubscribeFromTreeView()
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached

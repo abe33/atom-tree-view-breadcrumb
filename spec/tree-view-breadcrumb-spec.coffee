@@ -102,7 +102,7 @@ describe "TreeViewBreadcrumb", ->
           advanceClock(350)
           expect(workspaceElement.querySelector('tree-view-breadcrumb')).not.toExist()
 
-    describe 'when the tree view is toggled', ->
+    xdescribe 'when the tree view is toggled', ->
       beforeEach ->
         atom.commands.dispatch(workspaceElement, 'tree-view:toggle')
         nextAnimationFrame()
