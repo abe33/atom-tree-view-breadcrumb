@@ -160,7 +160,7 @@ class BreadcrumbElement extends HTMLElement
       @hide()
 
   getItemHeight: ->
-    @treeView.find('.list-item.header').first().height()
+    @treeView.find('.list-item.header').last().height()
 
   firstVisibleTreeItem: (scrollTop) ->
     itemHeight = @getItemHeight()
