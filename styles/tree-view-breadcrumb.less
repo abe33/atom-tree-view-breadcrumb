@@ -17,6 +17,18 @@ tree-view-breadcrumb {
   z-index: 2;
   height: auto;
 
+  &::-webkit-scrollbar {
+    height: 1px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: @text-color-subtle;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: @background-color-highlight;
+  }
+
   .btn-group {
     white-space: nowrap;
 
