@@ -1,3 +1,10 @@
+<a name="v0.6.0"></a>
+# v0.6.0 (2015-06-05)
+
+## :sparkles: Features
+
+- Add a setting to select the style of the breadcrumb scrollbar ([09930a47](https://github.com/abe33/atom-tree-view-breadcrumb/commit/09930a47cab717432c179e752c990b697b14465d))
+
 <a name="v0.5.0"></a>
 # v0.5.0 (2015-06-03)
 
