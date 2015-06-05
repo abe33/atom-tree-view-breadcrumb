@@ -45,6 +45,11 @@ class BreadcrumbElement extends HTMLElement
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRoot', (@displayProjectRoot) =>
       @updateBreadcrumb(@lastParent)
 
+    @subscriptions.add atom.config.observe 'tree-view-breadcrumb.scrollbarStyle', (style) =>
+      @classList.remove('system')
+      @classList.remove('thin')
+      @classList.add(style)
+
     requestAnimationFrame =>
       @subscribeToTreeView(@treeViewPackage.treeView) if @hasTreeView()
 

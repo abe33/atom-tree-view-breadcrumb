@@ -16,16 +16,21 @@ tree-view-breadcrumb {
   overflow-x: auto;
   z-index: 2;
   height: auto;
+  padding-bottom: 10px;
 
-  &::-webkit-scrollbar {
+  &.thin {
+    padding: 0;
+  }
+
+  &.thin::-webkit-scrollbar {
     height: 1px;
   }
 
-  &::-webkit-scrollbar-thumb {
+  &.thin::-webkit-scrollbar-thumb {
     background-color: @text-color-subtle;
   }
 
-  &::-webkit-scrollbar-track {
+  &.thin::-webkit-scrollbar-track {
     background-color: @background-color-highlight;
   }
 

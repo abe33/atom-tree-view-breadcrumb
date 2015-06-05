@@ -24,6 +24,12 @@ module.exports =
       default: false
       description: "Display the breadcrumb using the style of unix paths with / as separator."
 
+    scrollbarStyle:
+      type: 'string'
+      default: 'system'
+      enum: ['system', 'thin']
+      description: 'Changes the style of the breadcrumb scrollbar'
+
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
       @breadcrumbElement = new BreadcrumbElement
