@@ -88,6 +88,7 @@ class BreadcrumbElement extends HTMLElement
     setTimeout((=> @detach()), 300)
 
   attach: ->
+    return unless @treeViewResizer?
     @treeViewResizer.insertBefore(this, @treeViewResizer.firstChild)
     @attached = true
     if selectedEntry = @treeViewPackage.treeView.selectedEntry()
