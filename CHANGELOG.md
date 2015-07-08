@@ -1,3 +1,11 @@
+<a name="v0.6.1"></a>
+# v0.6.1 (2015-07-08)
+
+## :bug: Bug Fixes
+
+- Prevent error when attaching the breadcrumb and there's no tree-view ([7b3202b1](https://github.com/abe33/atom-tree-view-breadcrumb/commit/7b3202b1cb2004faf40c1ca09ccfe7ac209cf0dd), [#11](https://github.com/abe33/atom-tree-view-breadcrumb/issues/11))
+- Fix error raised when there's no selection in the tree view ([32943ef4](https://github.com/abe33/atom-tree-view-breadcrumb/commit/32943ef4a91a5de5beb28e7025e4ae67540a8f63), [#13](https://github.com/abe33/atom-tree-view-breadcrumb/issues/13))
+
 <a name="v0.6.0"></a>
 # v0.6.0 (2015-06-05)
 
