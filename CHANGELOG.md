@@ -1,3 +1,10 @@
+<a name="v0.6.2"></a>
+# v0.6.2 (2015-08-12)
+
+## :bug: Bug Fixes
+
+- Prevent error when asked to scroll to a null item ([2305298f](https://github.com/abe33/atom-tree-view-breadcrumb/commit/2305298f34f38ee3549e0a42633c9ba7324becd8), [#17](https://github.com/abe33/atom-tree-view-breadcrumb/issues/17))
+
 <a name="v0.6.1"></a>
 # v0.6.1 (2015-07-08)
 
