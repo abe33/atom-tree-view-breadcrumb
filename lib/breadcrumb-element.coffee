@@ -133,6 +133,7 @@ class BreadcrumbElement extends HTMLElement
       @scrollLeft = @scrollWidth
 
   scrollToItem: (item) ->
+    return unless item?
     oldScroll = @treeViewScroller.scrollTop
     scrollerOffset = @treeViewScroller.getBoundingClientRect()
     offset = item.getBoundingClientRect()
