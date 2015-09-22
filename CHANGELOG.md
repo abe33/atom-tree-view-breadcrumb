@@ -1,3 +1,10 @@
+<a name="v.0.6.3"></a>
+# v.0.6.3 (2015-09-22)
+
+## :arrow_up: Dependencies Update
+
+- Upgrade atom-utils version ([50327960](https://github.com/abe33/atom-tree-view-breadcrumb/commit/50327960e212d7319587d4b25b8b61b04479d9be))
+
 <a name="v0.6.2"></a>
 # v0.6.2 (2015-08-12)
 
