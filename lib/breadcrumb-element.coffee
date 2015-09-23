@@ -39,7 +39,7 @@ class BreadcrumbElement extends HTMLElement
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.keepBreadcrumbVisible', (visible) =>
       if visible and not @attached and @treeViewResizer?
         @show()
-      else if not visible and @attached and @breadcrumb.matches(':empty')
+      else if not visible and @attached and @breadcrumb.querySelectorAll('.btn:not(.root)').length is 0
         @hide()
 
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRoot', (@displayProjectRoot) =>
@@ -83,6 +83,7 @@ class BreadcrumbElement extends HTMLElement
     @classList.add('visible')
 
   hide: ->
+    console.log 'here'
     @classList.remove('visible')
     @treeViewScroller.classList.remove('with-breadcrumb')
     setTimeout((=> @detach()), 300)
