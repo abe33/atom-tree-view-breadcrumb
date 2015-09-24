@@ -79,13 +79,10 @@ class BreadcrumbElement extends HTMLElement
 
   show: ->
     @attach()
-    @treeViewScroller.classList.add('with-breadcrumb')
     @classList.add('visible')
 
   hide: ->
-    console.log 'here'
     @classList.remove('visible')
-    @treeViewScroller.classList.remove('with-breadcrumb')
     setTimeout((=> @detach()), 300)
 
   attach: ->

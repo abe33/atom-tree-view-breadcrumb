@@ -4,15 +4,12 @@
 
 .tree-view-scroller {
   transition: -webkit-transform 0.3s, height 0.3s;
-}
-
-.with-breadcrumb.tree-view-scroller {
-  -webkit-order: 2;
+  order: 2;
 }
 
 tree-view-breadcrumb {
-  display: -webkit-flex;
-  -webkit-order: 1;
+  display: flex;
+  order: 1;
   overflow-x: auto;
   z-index: 2;
   height: auto;
