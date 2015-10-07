@@ -35,6 +35,15 @@ tree-view-breadcrumb {
     .btn {
       float: none;
 
+      &::before {
+        vertical-align: middle;
+      }
+
+      span {
+        padding-left: 0.4em;
+        line-height: 1em;
+      }
+
       &.root::before {
         content: "\f001";
         font-family: 'Octicons Regular';
@@ -81,18 +90,6 @@ tree-view-breadcrumb.path-style {
 
         &:last-child {
           padding-right: 1em;
-        }
-
-        // Move the project root icon down
-        &.root {
-          &::before {
-            vertical-align: middle;
-          }
-
-          span {
-            padding-left: 0.4em;
-            line-height: 1em;
-          }
         }
 
         // Last button
