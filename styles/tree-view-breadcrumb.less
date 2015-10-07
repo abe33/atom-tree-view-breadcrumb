@@ -1,7 +1,5 @@
 @import "ui-variables";
 
-@breadcrumb-height: 27px;
-
 .tree-view-scroller {
   transition: -webkit-transform 0.3s, height 0.3s;
   order: 2;
@@ -43,12 +41,12 @@ tree-view-breadcrumb {
         font-weight: normal;
         font-style: normal;
         display: inline-block;
-        line-height: 1;
+        line-height: 1em;
         -webkit-font-smoothing: antialiased;
         text-decoration: none;
-        font-size: 16px !important;
-        width: 16px !important;
-        height: 16px !important;
+        font-size: 1.45em !important;
+        width: 1em !important;
+        height: 1em !important;
       }
     }
   }
@@ -74,14 +72,15 @@ tree-view-breadcrumb.path-style {
         color: @text-color;
 
         // Less padding
-        padding: 0px 2px;
+        padding: 0.2em;
 
         // Extra padding to the first and last items
         &:first-child {
-          padding-left: 5px;
+          padding-left: 0.5em;
         }
+
         &:last-child {
-          padding-right: 10px;
+          padding-right: 1em;
         }
 
         // Move the project root icon down
@@ -115,8 +114,8 @@ tree-view-breadcrumb.path-style {
             background: @background-color-highlight;
           }
           &:not(:first-child) {
-            background-image: -webkit-linear-gradient(left, transparent 7px, @background-color-highlight 7px, @background-color-highlight 100%);
-            background-image: linear-gradient(left, transparent 7px, @background-color-highlight 7px, @background-color-highlight 100%);
+            background-image: -webkit-linear-gradient(left, transparent 0.6em, @background-color-highlight 0.6em, @background-color-highlight 100%);
+            background-image: linear-gradient(left, transparent 0.6em, @background-color-highlight 0.6em, @background-color-highlight 100%);
           }
         }
       }
