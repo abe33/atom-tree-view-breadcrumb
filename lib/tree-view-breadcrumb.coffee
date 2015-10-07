@@ -27,7 +27,7 @@ module.exports =
     pathStyle:
       type: 'boolean'
       default: false
-      description: "Display the breadcrumb using the style of unix paths with / as separator."
+      description: "Display the breadcrumb using the style of unix paths with `/` as separator."
 
     scrollbarStyle:
       type: 'string'
