@@ -1,6 +1,6 @@
 {$, $$} = require 'space-pen'
 
-{click} = require './helpers/events'
+{click, scroll} = require './helpers/events'
 
 fakeEvent =
   stopImmediatePropagation: ->
@@ -57,6 +57,7 @@ describe "TreeViewBreadcrumb", ->
         treeView.moveDown(fakeEvent)
         treeView.expandDirectory()
         treeView.scrollTop(100)
+        scroll(treeView[0])
 
         waitsFor -> breadcrumbElement.frameRequested
         runs -> nextAnimationFrame()
@@ -81,6 +82,7 @@ describe "TreeViewBreadcrumb", ->
         treeView.moveDown(fakeEvent)
         treeView.expandDirectory()
         treeView.scrollTop(100)
+        scroll(treeView[0])
 
         waitsFor -> breadcrumbElement.frameRequested
         runs -> nextAnimationFrame()
@@ -150,6 +152,7 @@ describe "TreeViewBreadcrumb", ->
           treeView.expandDirectory()
           treeView.scrollTop(100)
           treeView.scrollTop(0)
+          scroll(treeView[0])
 
           waitsFor -> breadcrumbElement.frameRequested
           runs -> nextAnimationFrame()
@@ -167,6 +170,7 @@ describe "TreeViewBreadcrumb", ->
       describe 'then disabling it', ->
         beforeEach ->
           treeView.scrollTop(0)
+          scroll(treeView[0])
 
           waitsFor -> breadcrumbElement.frameRequested
           runs ->
@@ -183,6 +187,7 @@ describe "TreeViewBreadcrumb", ->
       treeView.moveDown(fakeEvent)
       treeView.expandDirectory()
       treeView.scrollTop(100)
+      scroll(treeView[0])
 
       waitsFor -> breadcrumbElement.frameRequested
       runs -> nextAnimationFrame()
@@ -198,6 +203,7 @@ describe "TreeViewBreadcrumb", ->
       treeView.moveDown(fakeEvent)
       treeView.expandDirectory()
       treeView.scrollTop(100)
+      scroll(treeView[0])
 
       waitsFor -> breadcrumbElement.frameRequested
       runs -> nextAnimationFrame()
