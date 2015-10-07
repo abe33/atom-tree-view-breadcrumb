@@ -86,7 +86,14 @@ tree-view-breadcrumb.path-style {
 
         // Move the project root icon down
         &.root {
-          padding-top: 3px;
+          &::before {
+            vertical-align: middle;
+          }
+
+          span {
+            padding-left: 0.4em;
+            line-height: 1em;
+          }
         }
 
         // Last button

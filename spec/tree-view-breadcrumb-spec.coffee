@@ -190,3 +190,19 @@ describe "TreeViewBreadcrumb", ->
     it 'adds a button for the root in the breadcrumb', ->
       breadcrumb = workspaceElement.querySelector('tree-view-breadcrumb')
       expect(breadcrumb.querySelector('.btn.root')).toExist()
+
+  describe 'when display project root name option is enabled', ->
+    beforeEach ->
+      atom.config.set 'tree-view-breadcrumb.displayProjectRoot', true
+      atom.config.set 'tree-view-breadcrumb.displayProjectRootName', true
+      treeView.moveDown(fakeEvent)
+      treeView.expandDirectory()
+      treeView.scrollTop(100)
+
+      waitsFor -> breadcrumbElement.frameRequested
+      runs -> nextAnimationFrame()
+
+    it 'adds a button for the root in the breadcrumb', ->
+      breadcrumb = workspaceElement.querySelector('tree-view-breadcrumb')
+      expect(breadcrumb.querySelector('.btn.root')).toExist()
+      expect(breadcrumb.querySelector('.btn.root').textContent).toEqual('fixtures')

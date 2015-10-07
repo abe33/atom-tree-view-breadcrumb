@@ -45,6 +45,9 @@ class BreadcrumbElement extends HTMLElement
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRoot', (@displayProjectRoot) =>
       @updateBreadcrumb(@lastParent)
 
+    @subscriptions.add atom.config.observe 'tree-view-breadcrumb.displayProjectRootName', (@displayProjectRootName) =>
+      @updateBreadcrumb(@lastParent)
+
     @subscriptions.add atom.config.observe 'tree-view-breadcrumb.scrollbarStyle', (style) =>
       @classList.remove('system')
       @classList.remove('thin')
@@ -106,11 +109,15 @@ class BreadcrumbElement extends HTMLElement
     html = []
     parents = []
     parents.unshift n for n in AncestorsMethods.parents(node, '.directory')
-    parents.shift()
+    projectRoot = parents.shift()
 
     if @displayProjectRoot
-      root = @treeView.find('.header .name').first()
-      html.push "<div class='btn root' data-target='#{root.data('path')}'></div>"
+      root = projectRoot.querySelector('.header .name')
+      name = if @displayProjectRootName
+        "<span>#{root.textContent}</span>"
+      else
+        ''
+      html.push "<div class='btn root' data-target='#{root.getAttribute('data-path')}'>#{name}</div>"
 
     parents.forEach (node, i) ->
       name = node.querySelector('.header > .name')

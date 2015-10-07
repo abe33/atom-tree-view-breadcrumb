@@ -19,6 +19,11 @@ module.exports =
       default: false
       description: "Display the project root as an icon in the breadcrumb."
 
+    displayProjectRootName:
+      type: 'boolean'
+      default: false
+      description: "Display the current project root name next to the root icon in the breadcrumb. This setting will only works if `Display Project Root` is also enabled"
+
     pathStyle:
       type: 'boolean'
       default: false
