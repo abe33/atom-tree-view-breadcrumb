@@ -1,3 +1,14 @@
+<a name="v0.7.0"></a>
+# v0.7.0 (2015-10-07)
+
+## :sparkles: Features
+
+- Implement setting to display the current project root name ([e975e5ae](https://github.com/abe33/atom-tree-view-breadcrumb/commit/e975e5aee136b93da92fb2eff1341d48cad49cd3), [#21](https://github.com/abe33/atom-tree-view-breadcrumb/issues/21))
+
+## :bug: Bug Fixes
+
+- Properly remove the breadcrumb when root is always visible ([847e89c0](https://github.com/abe33/atom-tree-view-breadcrumb/commit/847e89c01785d9d82d0b4cc1f2039c5828d20109))
+
 <a name="v.0.6.3"></a>
 # v.0.6.3 (2015-09-22)
 
