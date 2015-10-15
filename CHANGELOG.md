@@ -1,3 +1,10 @@
+<a name="v0.7.1"></a>
+# v0.7.1 (2015-10-15)
+
+## :bug: Bug Fixes
+
+- Fix button style with certain themes ([7aaad116](https://github.com/abe33/atom-tree-view-breadcrumb/commit/7aaad116b1b0fe6778d6225ec3ac40b4cab05922))
+
 <a name="v0.7.0"></a>
 # v0.7.0 (2015-10-07)
 
