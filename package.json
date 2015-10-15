@@ -1,7 +1,7 @@
 {
   "name": "tree-view-breadcrumb",
   "main": "./lib/tree-view-breadcrumb",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Display a breadcrumb on tree view scroll",
   "repository": "https://github.com/abe33/atom-tree-view-breadcrumb",
   "license": "MIT",
