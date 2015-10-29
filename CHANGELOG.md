@@ -1,3 +1,11 @@
+<a name="v0.8.0"></a>
+# v0.8.0 (2015-10-30)
+
+## :sparkles: Features
+
+- Add new positioning setting ([4bb4843c](https://github.com/abe33/atom-tree-view-breadcrumb/commit/4bb4843c046869942c6632dfe9712d3b2275365b))  <br>The breadcrumb can now be positioned above or below the tree view using
+  the new setting.
+
 <a name="v0.7.1"></a>
 # v0.7.1 (2015-10-15)
 
