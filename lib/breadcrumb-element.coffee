@@ -53,6 +53,9 @@ class BreadcrumbElement extends HTMLElement
       @classList.remove('thin')
       @classList.add(style)
 
+    @subscriptions.add atom.config.observe 'tree-view-breadcrumb.breadcrumbPosition', (position) =>
+      @classList.toggle('bottom', position is 'bottom')
+
     requestAnimationFrame =>
       @subscribeToTreeView(@treeViewPackage.treeView) if @hasTreeView()
 

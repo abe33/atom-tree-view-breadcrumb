@@ -35,6 +35,12 @@ module.exports =
       enum: ['system', 'thin']
       description: 'Changes the style of the breadcrumb scrollbar'
 
+    breadcrumbPosition:
+      type: 'string'
+      default: 'top'
+      enum: ['top','bottom']
+      description: 'Position of the breadcrumb relatively to the tree view'
+
   activate: (state) ->
     requirePackages('tree-view').then ([treeView]) =>
       @breadcrumbElement = new BreadcrumbElement
