@@ -1,3 +1,10 @@
+<a name="v0.8.1"></a>
+# v0.8.1 (2016-02-04)
+
+## :bug: Bug Fixes
+
+- Force min-height based on content ([0370437a](https://github.com/abe33/atom-tree-view-breadcrumb/commit/0370437a18efc58cf7dbf32fe77554b2e2d8fc5c))
+
 <a name="v0.8.0"></a>
 # v0.8.0 (2015-10-30)
 
